@@ -1,0 +1,115 @@
+
+classDiagram
+class User {
+    +int id {PK}
+    +string firstName
+    +string lastName
+    +string email
+    +string password
+    +enum role
+    +string phone
+    +datetime createdAt
+    +datetime updatedAt
+}
+
+class Farmer {
+    +int id {PK}
+    +int userId {FK}
+    +string cin
+    +string region
+    +string commune
+    +decimal farmSize
+    +string language
+    +datetime createdAt
+}
+
+class LandPlot {
+    +int id {PK}
+    +int farmerId {FK}
+    +string name
+    +decimal area
+    +string location
+    +string soilType
+    +datetime createdAt
+}
+
+class Product {
+    +int id {PK}
+    +string name
+    +string category
+    +string unit
+    +string description
+}
+
+class Harvest {
+    +int id {PK}
+    +int landPlotId {FK}
+    +int productId {FK}
+    +decimal quantity
+    +date harvestDate
+    +string quality
+    +enum status
+}
+
+class Market {
+    +int id {PK}
+    +string name
+    +string city
+    +string region
+}
+
+class MarketPrice {
+    +int id {PK}
+    +int marketId {FK}
+    +int productId {FK}
+    +decimal pricePerKg
+    +date recordedAt
+}
+
+class SaleOffer {
+    +int id {PK}
+    +int harvestId {FK}
+    +int marketId {FK}
+    +decimal askingPrice
+    +enum status
+    +date createdAt
+}
+
+class Conversation {
+    +int id {PK}
+    +int farmerId {FK}
+    +datetime startedAt
+}
+
+class Message {
+    +int id {PK}
+    +int conversationId {FK}
+    +enum sender
+    +text content
+    +datetime createdAt
+}
+
+class PriceAlert {
+    +int id {PK}
+    +int farmerId {FK}
+    +int productId {FK}
+    +decimal targetPrice
+    +boolean active
+}
+
+User "1" --> "0..1" Farmer
+Farmer "1" --> "*" LandPlot
+LandPlot "1" --> "*" Harvest
+Product "1" --> "*" Harvest
+
+Market "1" --> "*" MarketPrice
+Product "1" --> "*" MarketPrice
+
+Harvest "1" --> "0..*" SaleOffer
+Market "1" --> "0..*" SaleOffer
+
+Farmer "1" --> "*" Conversation
+Conversation "1" --> "*" Message
+
+Farmer "1" --> "*" PriceAlert
+Product "1" --> "*" PriceAlert

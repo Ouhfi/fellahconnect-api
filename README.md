@@ -50,20 +50,91 @@ The AI assistant compares market prices, recommends the best market, and can cre
 ## 📂 Project Structure
 
 ```text
-src/
+fellahconnect-api/
 │
-├── config/
-├── controllers/
-├── middlewares/
+├── src/
+│   ├── config/
+│   │   ├── database.js
+│   │   ├── gemini.js
+│   │   └── env.js
+│   │
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── farmer.controller.js
+│   │   ├── landPlot.controller.js
+│   │   ├── product.controller.js
+│   │   ├── harvest.controller.js
+│   │   ├── market.controller.js
+│   │   ├── marketPrice.controller.js
+│   │   ├── saleOffer.controller.js
+│   │   └── ai.controller.js
+│   │
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Farmer.js
+│   │   ├── LandPlot.js
+│   │   ├── Product.js
+│   │   ├── Harvest.js
+│   │   ├── Market.js
+│   │   ├── MarketPrice.js
+│   │   ├── SaleOffer.js
+│   │   ├── index.js
+│   │   └── associations.js
+│   │
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   ├── farmer.routes.js
+│   │   ├── landPlot.routes.js
+│   │   ├── product.routes.js
+│   │   ├── harvest.routes.js
+│   │   ├── market.routes.js
+│   │   ├── marketPrice.routes.js
+│   │   ├── saleOffer.routes.js
+│   │   ├── ai.routes.js
+│   │   └── index.js
+│   │
+│   ├── middlewares/
+│   │   ├── auth.middleware.js
+│   │   ├── role.middleware.js
+│   │   ├── validate.middleware.js
+│   │   └── error.middleware.js
+│   │
+│   ├── services/
+│   │   ├── auth.service.js
+│   │   ├── harvest.service.js
+│   │   ├── market.service.js
+│   │   ├── ai.service.js
+│   │   └── dashboard.service.js
+│   │
+│   ├── utils/
+│   │   ├── apiResponse.js
+│   │   └── logger.js
+│   │
+│   ├── validators/
+│   │   ├── auth.validator.js
+│   │   ├── harvest.validator.js
+│   │   └── product.validator.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
 ├── migrations/
-├── models/
-├── routes/
 ├── seeders/
-├── services/
-├── tools/
-├── validators/
-├── ai/
-└── app.js
+├── tests/
+│   ├── postman/
+│   └── api/
+│
+├── docs/
+│   ├── UML.png
+│   ├── CONCEPTION.md
+│   └── API.md
+│
+├── .env
+├── .env.example
+├── .gitignore
+├── package.json
+├── README.md
+└── docker-compose.yml (optional)
 ```
 
 ---
