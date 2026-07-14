@@ -311,12 +311,26 @@ Done! Your sale offer has been successfully created.
 
 | Name | Role |
 |------|------|
-| Member 1 | Tech Lead |
-| Member 2 | Backend Developer |
-| Member 3 | Database Engineer |
-| Member 4 | Security & AI |
+Oussama	|Tech Lead |  Architecture, AI Agent, Code Review
+khadija | Database Engineer REST API, Controllers, Business Logic
+Aya | Backend | Database Design, Sequelize, Migrations
+Sara|Security & QA Engineer	|Authentication, Testing, Documentation
 
 ---
+
+## branches 
+
+main
+ |
+develop
+ |
+ +-- feature/database
+ |
+ +-- feature/api
+ |
+ +-- feature/auth
+ |
+ +-- feature/ai
 
 ## 📄 License
 
