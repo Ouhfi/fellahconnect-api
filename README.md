@@ -320,18 +320,14 @@ marouan|Security & QA |Authentication, Testing, Documentation
 
 ## branches 
 
-main
- |
-develop
- |
- +feature/database
- |
- +feature/api
- |
- +feature/auth
- |
- +feature/ai
-
+|Branches|
+|--------|
+main|
+develop|
+feature/database|
+feature/api|
+feature/auth|
+feature/ai|
 ## 📄 License
 
 This project was developed as part of a school project in collaboration with **FellahConnect**.
