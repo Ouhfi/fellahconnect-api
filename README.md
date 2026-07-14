@@ -309,12 +309,12 @@ Done! Your sale offer has been successfully created.
 
 ## 👥 Team
 
-| Name | Role |
-|------|------|
+| Name | Role |      |
+|------|------|------|
 Oussama	|Tech Lead |  Architecture, AI Agent, Code Review
-khadija | Database Engineer REST API, Controllers, Business Logic
+khadija | Database |REST API, Controllers, Business Logic
 Aya | Backend | Database Design, Sequelize, Migrations
-Sara|Security & QA Engineer	|Authentication, Testing, Documentation
+marwouan|Security & QA |Authentication, Testing, Documentation
 
 ---
 
@@ -324,13 +324,13 @@ main
  |
 develop
  |
- +-- feature/database
+ +feature/database
  |
- +-- feature/api
+ +feature/api
  |
- +-- feature/auth
+ +feature/auth
  |
- +-- feature/ai
+ +feature/ai
 
 ## 📄 License
 
