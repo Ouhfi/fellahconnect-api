@@ -2,7 +2,7 @@
 
 > AI-powered Smart Agriculture Platform for Moroccan Farmers 🇲🇦
 
-![Banner](./assets/banner.png)
+![Banner](./image/Gemini_Generated_Image_nus4pznus4pznus4.png)
 
 ## 📖 About
 
