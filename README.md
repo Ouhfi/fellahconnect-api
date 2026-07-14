@@ -92,7 +92,7 @@ fellahconnect-api/
 │   │   ├── saleOffer.routes.js
 │   │   ├── ai.routes.js
 │   │   └── index.js
-│   │
+│   │s
 │   ├── middlewares/
 │   │   ├── auth.middleware.js
 │   │   ├── role.middleware.js
