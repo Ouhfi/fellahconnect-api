@@ -314,7 +314,7 @@ Done! Your sale offer has been successfully created.
 Oussama	|Tech Lead |  Architecture, AI Agent, Code Review
 khadija | Database |REST API, Controllers, Business Logic
 Aya | Backend | Database Design, Sequelize, Migrations
-marwouan|Security & QA |Authentication, Testing, Documentation
+marouan|Security & QA |Authentication, Testing, Documentation
 
 ---
 
