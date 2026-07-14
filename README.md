@@ -173,26 +173,60 @@ GEMINI_API_KEY=your_api_key
 
 ---
 
+
+## 🐳 Docker
+
+### Build the containers
+
+```bash
+docker compose up --build
+```
+
+### Start containers
+
+```bash
+docker compose up -d
+```
+
+### Stop containers
+
+```bash
+docker compose down
+```
+
+### View logs
+
+```bash
+docker compose logs -f
+```
+
+
 ## 🗄 Database
 
 Run migrations
 
 ```bash
-npx sequelize-cli db:migrate
+docker compose exec api npx sequelize-cli db:migrate
 ```
 
 Run seeders
 
 ```bash
-npx sequelize-cli db:seed:all
+docker compose exec api npx sequelize-cli db:seed:all
 ```
-
----
 
 ## ▶️ Run Project
 
+Start the application
+
 ```bash
-npm run dev
+docker compose up
+```
+
+The API will be available at
+
+```
+http://localhost:3000
 ```
 
 ---
