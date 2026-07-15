@@ -4,14 +4,14 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("farmers", {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
       },
 
       userId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "users",
@@ -21,7 +21,12 @@ module.exports = {
         onDelete: "CASCADE",
       },
 
-      fullName: {
+      firstName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      lastName: {
         type: Sequelize.STRING,
         allowNull: false,
       },

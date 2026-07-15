@@ -2,23 +2,12 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("land_plots", {
+    await queryInterface.createTable("markets", {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false,
-      },
-
-      farmerId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: "farmers",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
 
       name: {
@@ -26,24 +15,28 @@ module.exports = {
         allowNull: false,
       },
 
-      area: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-      },
-
-      location: {
+      city: {
         type: Sequelize.STRING,
         allowNull: false,
       },
 
-      soilType: {
+      region: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      type: {
         type: Sequelize.ENUM(
-          "Clay",
-          "Sandy",
-          "Loamy",
-          "Rocky"
+          "Wholesale",
+          "Retail",
+          "Local"
         ),
         allowNull: false,
+      },
+
+      address: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
 
       isActive: {
@@ -53,26 +46,29 @@ module.exports = {
       },
 
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
 
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
 
-    await queryInterface.addIndex("land_plots", ["farmerId"]);
-    await queryInterface.addIndex("land_plots", ["isActive"]);
+    await queryInterface.addIndex("markets", ["city"]);
+    await queryInterface.addIndex("markets", ["region"]);
+    await queryInterface.addIndex("markets", ["type"]);
+    await queryInterface.addIndex("markets", ["isActive"]);
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable("land_plots");
+    await queryInterface.dropTable("markets");
+
     await queryInterface.sequelize.query(
-      'DROP TYPE IF EXISTS "enum_land_plots_soilType";'
+      'DROP TYPE IF EXISTS "enum_markets_type";'
     );
   },
 };
