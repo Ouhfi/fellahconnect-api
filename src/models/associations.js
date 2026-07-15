@@ -10,7 +10,7 @@ module.exports = (models) => {
     SaleOffer,
   } = models;
 
-  // User ↔ Farmer
+  
   User.hasOne(Farmer, {
     foreignKey: "userId",
     as: "farmer",
@@ -21,7 +21,7 @@ module.exports = (models) => {
     as: "user",
   });
 
-  // Farmer ↔ LandPlot
+  
   Farmer.hasMany(LandPlot, {
     foreignKey: "farmerId",
     as: "landPlots",
@@ -32,7 +32,7 @@ module.exports = (models) => {
     as: "farmer",
   });
 
-  // Farmer ↔ Harvest
+  
   Farmer.hasMany(Harvest, {
     foreignKey: "farmerId",
     as: "harvests",
@@ -43,7 +43,7 @@ module.exports = (models) => {
     as: "farmer",
   });
 
-  // LandPlot ↔ Harvest
+  
   LandPlot.hasMany(Harvest, {
     foreignKey: "landPlotId",
     as: "harvests",
@@ -54,7 +54,7 @@ module.exports = (models) => {
     as: "landPlot",
   });
 
-  // Product ↔ Harvest
+  
   Product.hasMany(Harvest, {
     foreignKey: "productId",
     as: "harvests",
@@ -65,7 +65,7 @@ module.exports = (models) => {
     as: "product",
   });
 
-  // Product ↔ MarketPrice
+  
   Product.hasMany(MarketPrice, {
     foreignKey: "productId",
     as: "marketPrices",
@@ -76,7 +76,7 @@ module.exports = (models) => {
     as: "product",
   });
 
-  // Market ↔ MarketPrice
+  
   Market.hasMany(MarketPrice, {
     foreignKey: "marketId",
     as: "marketPrices",
@@ -87,7 +87,6 @@ module.exports = (models) => {
     as: "market",
   });
 
-  // Farmer ↔ SaleOffer
   Farmer.hasMany(SaleOffer, {
     foreignKey: "farmerId",
     as: "saleOffers",
@@ -98,7 +97,7 @@ module.exports = (models) => {
     as: "farmer",
   });
 
-  // Harvest ↔ SaleOffer
+  
   Harvest.hasMany(SaleOffer, {
     foreignKey: "harvestId",
     as: "saleOffers",
@@ -109,7 +108,7 @@ module.exports = (models) => {
     as: "harvest",
   });
 
-  // Market ↔ SaleOffer
+  
   Market.hasMany(SaleOffer, {
     foreignKey: "marketId",
     as: "saleOffers",
