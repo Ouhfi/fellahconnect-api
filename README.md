@@ -173,26 +173,60 @@ GEMINI_API_KEY=your_api_key
 
 ---
 
+
+## 🐳 Docker
+
+### Build the containers
+
+```bash
+docker compose up --build
+```
+
+### Start containers
+
+```bash
+docker compose up -d
+```
+
+### Stop containers
+
+```bash
+docker compose down
+```
+
+### View logs
+
+```bash
+docker compose logs -f
+```
+
+
 ## 🗄 Database
 
 Run migrations
 
 ```bash
-npx sequelize-cli db:migrate
+docker compose exec api npx sequelize-cli db:migrate
 ```
 
 Run seeders
 
 ```bash
-npx sequelize-cli db:seed:all
+docker compose exec api npx sequelize-cli db:seed:all
 ```
-
----
 
 ## ▶️ Run Project
 
+Start the application
+
 ```bash
-npm run dev
+docker compose up
+```
+
+The API will be available at
+
+```
+http://localhost:3000
 ```
 
 ---
@@ -309,29 +343,25 @@ Done! Your sale offer has been successfully created.
 
 ## 👥 Team
 
-| Name | Role |
-|------|------|
+| Name | Role |      |
+|------|------|------|
 Oussama	|Tech Lead |  Architecture, AI Agent, Code Review
-khadija | Database Engineer REST API, Controllers, Business Logic
+khadija | Database |REST API, Controllers, Business Logic
 Aya | Backend | Database Design, Sequelize, Migrations
-Sara|Security & QA Engineer	|Authentication, Testing, Documentation
+marouan|Security & QA |Authentication, Testing, Documentation
 
 ---
 
 ## branches 
 
-main
- |
-develop
- |
- +-- feature/database
- |
- +-- feature/api
- |
- +-- feature/auth
- |
- +-- feature/ai
-
+|Branches|
+|--------|
+main|
+develop|
+feature/database|
+feature/api|
+feature/auth|
+feature/ai|
 ## 📄 License
 
 This project was developed as part of a school project in collaboration with **FellahConnect**.
