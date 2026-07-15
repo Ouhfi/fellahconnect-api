@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key_here";
 /**
  * Register a new user (and farmer profile if role is farmer)
  */
-exports.register = async (req, res, next) => {
+async function register(req, res, next) {
   const transaction = await sequelize.transaction();
   try {
     const { username, email, password, role = "farmer", firstName, lastName, phone, city, region } = req.body;
@@ -70,12 +70,12 @@ exports.register = async (req, res, next) => {
     await transaction.rollback();
     next(error);
   }
-};
+}
 
 /**
  * Log in a user
  */
-exports.login = async (req, res, next) => {
+async function login(req, res, next) {
   try {
     const { email, password } = req.body;
 
@@ -120,12 +120,12 @@ exports.login = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get current logged in user details
  */
-exports.getMe = async (req, res, next) => {
+async function getMe(req, res, next) {
   try {
     return ApiResponse.success(res, "User details retrieved", {
       user: req.user
@@ -133,4 +133,10 @@ exports.getMe = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+}
+
+module.exports = {
+  register,
+  login,
+  getMe,
 };

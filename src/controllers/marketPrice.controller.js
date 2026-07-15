@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 /**
  * Create a new market price entry
  */
-exports.createMarketPrice = async (req, res, next) => {
+async function createMarketPrice(req, res, next) {
   try {
     const { marketId, productId, quality, price, priceDate } = req.body;
 
@@ -42,12 +42,12 @@ exports.createMarketPrice = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get all market prices with filtering, pagination, and sorting
  */
-exports.getAllMarketPrices = async (req, res, next) => {
+async function getAllMarketPrices(req, res, next) {
   try {
     const { marketId, productId, quality, startDate, endDate, page = 1, limit = 10 } = req.query;
     const offset = (page - 1) * limit;
@@ -83,12 +83,12 @@ exports.getAllMarketPrices = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get price history for a specific product and market (useful for charts)
  */
-exports.getMarketPriceHistory = async (req, res, next) => {
+async function getMarketPriceHistory(req, res, next) {
   try {
     const { marketId, productId } = req.params;
     const { startDate, endDate, quality } = req.query;
@@ -119,12 +119,12 @@ exports.getMarketPriceHistory = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get a specific market price by ID
  */
-exports.getMarketPriceById = async (req, res, next) => {
+async function getMarketPriceById(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -143,12 +143,12 @@ exports.getMarketPriceById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Update a market price by ID
  */
-exports.updateMarketPrice = async (req, res, next) => {
+async function updateMarketPrice(req, res, next) {
   try {
     const { id } = req.params;
     const { price, quality, priceDate } = req.body;
@@ -168,12 +168,12 @@ exports.updateMarketPrice = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Delete a market price by ID
  */
-exports.deleteMarketPrice = async (req, res, next) => {
+async function deleteMarketPrice(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -188,4 +188,13 @@ exports.deleteMarketPrice = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+}
+
+module.exports = {
+  createMarketPrice,
+  getAllMarketPrices,
+  getMarketPriceHistory,
+  getMarketPriceById,
+  updateMarketPrice,
+  deleteMarketPrice,
 };

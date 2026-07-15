@@ -1,7 +1,7 @@
 const ApiResponse = require("../utils/apiResponse");
 
-const restrictTo = (...roles) => {
-  return (req, res, next) => {
+function restrictTo(...roles) {
+  return function (req, res, next) {
     if (!req.user) {
       return ApiResponse.error(res, "User context not found. Authentication required.", 401);
     }
@@ -12,6 +12,6 @@ const restrictTo = (...roles) => {
 
     next();
   };
-};
+}
 
 module.exports = { restrictTo };

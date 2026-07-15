@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 /**
  * Create a new product (Admin only)
  */
-exports.createProduct = async (req, res, next) => {
+async function createProduct(req, res, next) {
   try {
     const { name, category, unit, seasonStart, seasonEnd, description } = req.body;
 
@@ -27,12 +27,12 @@ exports.createProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get all products with search and category filters
  */
-exports.getAllProducts = async (req, res, next) => {
+async function getAllProducts(req, res, next) {
   try {
     const { search, category } = req.query;
 
@@ -50,12 +50,12 @@ exports.getAllProducts = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get a specific product by ID
  */
-exports.getProductById = async (req, res, next) => {
+async function getProductById(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -68,12 +68,12 @@ exports.getProductById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Update product (Admin only)
  */
-exports.updateProduct = async (req, res, next) => {
+async function updateProduct(req, res, next) {
   try {
     const { id } = req.params;
     const { name, category, unit, seasonStart, seasonEnd, description } = req.body;
@@ -103,12 +103,12 @@ exports.updateProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Delete product (Admin only)
  */
-exports.deleteProduct = async (req, res, next) => {
+async function deleteProduct(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -123,4 +123,12 @@ exports.deleteProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+}
+
+module.exports = {
+  createProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
 };

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User, Farmer } = require("../models");
 const ApiResponse = require("../utils/apiResponse");
 
-const protect = async (req, res, next) => {
+async function protect(req, res, next) {
   try {
     let token;
 
@@ -44,6 +44,6 @@ const protect = async (req, res, next) => {
   } catch (error) {
     return ApiResponse.error(res, "Not authorized, token failed", 401);
   }
-};
+}
 
 module.exports = { protect };

@@ -4,7 +4,7 @@ const ApiResponse = require("../utils/apiResponse");
 /**
  * Create a new land plot
  */
-exports.createLandPlot = async (req, res, next) => {
+async function createLandPlot(req, res, next) {
   try {
     const { name, area, location, soilType, isActive } = req.body;
     let { farmerId } = req.body;
@@ -38,12 +38,12 @@ exports.createLandPlot = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get all land plots (Farmers see only their own, Admins see all)
  */
-exports.getAllLandPlots = async (req, res, next) => {
+async function getAllLandPlots(req, res, next) {
   try {
     const where = {};
 
@@ -76,12 +76,12 @@ exports.getAllLandPlots = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Get a specific land plot by ID
  */
-exports.getLandPlotById = async (req, res, next) => {
+async function getLandPlotById(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -108,12 +108,12 @@ exports.getLandPlotById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Update a land plot
  */
-exports.updateLandPlot = async (req, res, next) => {
+async function updateLandPlot(req, res, next) {
   try {
     const { id } = req.params;
     const { name, area, location, soilType, isActive } = req.body;
@@ -140,12 +140,12 @@ exports.updateLandPlot = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 /**
  * Delete a land plot
  */
-exports.deleteLandPlot = async (req, res, next) => {
+async function deleteLandPlot(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -165,4 +165,12 @@ exports.deleteLandPlot = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+}
+
+module.exports = {
+  createLandPlot,
+  getAllLandPlots,
+  getLandPlotById,
+  updateLandPlot,
+  deleteLandPlot,
 };
