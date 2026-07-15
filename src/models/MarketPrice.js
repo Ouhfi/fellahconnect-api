@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-module.exports = (sequelize) => {
+module.exports = (sequelize,DataTypes) => {
   class MarketPrice extends Model {
     static associate(models) {
       MarketPrice.belongsTo(models.Market, {
