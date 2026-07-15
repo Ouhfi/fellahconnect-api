@@ -18,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   LandPlot.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
 
       farmerId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
