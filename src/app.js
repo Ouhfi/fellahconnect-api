@@ -29,15 +29,12 @@ app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/products", require("./routes/product.routes"));
 app.use("/api/market-prices", require("./routes/marketPrice.routes"));
 
+const errorHandler = require("./middlewares/error.middleware");
+
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-app.use((err, req, res, next) => {
-  logger.error(err);
-  res.status(err.status || 500).json({
-    message: err.message || "Internal server error",
-  });
-});
+app.use(errorHandler);
 
 module.exports = app;
