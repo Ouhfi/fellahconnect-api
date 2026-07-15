@@ -27,6 +27,7 @@ app.get("/health", (req, res) => {
 // Route Registrations
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/products", require("./routes/product.routes"));
+app.use("/api/land-plots", require("./routes/landPlot.routes"));
 app.use("/api/market-prices", require("./routes/marketPrice.routes"));
 
 const errorHandler = require("./middlewares/error.middleware");
