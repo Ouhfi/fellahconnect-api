@@ -26,8 +26,12 @@ app.get("/health", (req, res) => {
 
 // Route Registrations
 app.use("/api/auth", require("./routes/auth.routes"));
+app.use("/api/farmers", require("./routes/farmer.routes"));
 app.use("/api/products", require("./routes/product.routes"));
 app.use("/api/land-plots", require("./routes/landPlot.routes"));
+app.use("/api/harvests", require("./routes/harvest.routes"));
+app.use("/api/markets", require("./routes/market.routes"));
+app.use("/api/sale-offers", require("./routes/saleOffer.routes"));
 app.use("/api/market-prices", require("./routes/marketPrice.routes"));
 
 const errorHandler = require("./middlewares/error.middleware");
