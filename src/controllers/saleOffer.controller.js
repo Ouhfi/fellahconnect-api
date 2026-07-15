@@ -5,7 +5,7 @@ class SaleOfferController {
   /**
    * Create a new sale offer
    */
-  static async createSaleOffer(req, res, next) {
+  async createSaleOffer(req, res, next) {
     try {
       const { harvestId, marketId, quantity, unitPrice, offerDate, status } = req.body;
 
@@ -53,7 +53,7 @@ class SaleOfferController {
   /**
    * Get all sale offers (Farmers see their own, Admins see all, others can filter)
    */
-  static async getAllSaleOffers(req, res, next) {
+  async getAllSaleOffers(req, res, next) {
     try {
       const where = {};
 
@@ -105,7 +105,7 @@ class SaleOfferController {
   /**
    * Get a specific sale offer by ID
    */
-  static async getSaleOfferById(req, res, next) {
+  async getSaleOfferById(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -152,7 +152,7 @@ class SaleOfferController {
   /**
    * Update a sale offer
    */
-  static async updateSaleOffer(req, res, next) {
+  async updateSaleOffer(req, res, next) {
     try {
       const { id } = req.params;
       const { harvestId, marketId, quantity, unitPrice, offerDate, status } = req.body;
@@ -207,7 +207,7 @@ class SaleOfferController {
   /**
    * Delete a sale offer
    */
-  static async deleteSaleOffer(req, res, next) {
+  async deleteSaleOffer(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -229,4 +229,4 @@ class SaleOfferController {
   }
 }
 
-module.exports = SaleOfferController;
+module.exports = new SaleOfferController();

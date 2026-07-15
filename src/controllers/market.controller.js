@@ -5,7 +5,7 @@ class MarketController {
   /**
    * Create a new market (Admin only)
    */
-  static async createMarket(req, res, next) {
+  async createMarket(req, res, next) {
     try {
       const { name, city, region, type, address, isActive } = req.body;
 
@@ -27,7 +27,7 @@ class MarketController {
   /**
    * Get all markets with filters
    */
-  static async getAllMarkets(req, res, next) {
+  async getAllMarkets(req, res, next) {
     try {
       const { city, type } = req.query;
 
@@ -50,7 +50,7 @@ class MarketController {
   /**
    * Get a specific market by ID
    */
-  static async getMarketById(req, res, next) {
+  async getMarketById(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -68,7 +68,7 @@ class MarketController {
   /**
    * Update a market (Admin only)
    */
-  static async updateMarket(req, res, next) {
+  async updateMarket(req, res, next) {
     try {
       const { id } = req.params;
       const { name, city, region, type, address, isActive } = req.body;
@@ -96,7 +96,7 @@ class MarketController {
   /**
    * Delete a market (Admin only)
    */
-  static async deleteMarket(req, res, next) {
+  async deleteMarket(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -114,4 +114,4 @@ class MarketController {
   }
 }
 
-module.exports = MarketController;
+module.exports = new MarketController();

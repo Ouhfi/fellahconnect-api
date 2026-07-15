@@ -5,7 +5,7 @@ class FarmerController {
   /**
    * Get all farmers with filters
    */
-  static async getAllFarmers(req, res, next) {
+  async getAllFarmers(req, res, next) {
     try {
       const { city, region, verificationStatus } = req.query;
 
@@ -34,7 +34,7 @@ class FarmerController {
   /**
    * Get a specific farmer by ID
    */
-  static async getFarmerById(req, res, next) {
+  async getFarmerById(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -69,7 +69,7 @@ class FarmerController {
   /**
    * Update farmer profile (Farmer updates own, Admin updates any)
    */
-  static async updateFarmerProfile(req, res, next) {
+  async updateFarmerProfile(req, res, next) {
     try {
       const { id } = req.params;
       const { firstName, lastName, phone, city, region } = req.body;
@@ -101,7 +101,7 @@ class FarmerController {
   /**
    * Verify farmer status (Admin only)
    */
-  static async verifyFarmer(req, res, next) {
+  async verifyFarmer(req, res, next) {
     try {
       const { id } = req.params;
       const { verificationStatus } = req.body;
@@ -120,4 +120,4 @@ class FarmerController {
   }
 }
 
-module.exports = FarmerController;
+module.exports = new FarmerController();

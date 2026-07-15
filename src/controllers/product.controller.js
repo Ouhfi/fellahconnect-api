@@ -6,7 +6,7 @@ class ProductController {
   /**
    * Create a new product (Admin only)
    */
-  static async createProduct(req, res, next) {
+  async createProduct(req, res, next) {
     try {
       const { name, category, unit, seasonStart, seasonEnd, description } = req.body;
 
@@ -33,7 +33,7 @@ class ProductController {
   /**
    * Get all products with search and category filters
    */
-  static async getAllProducts(req, res, next) {
+  async getAllProducts(req, res, next) {
     try {
       const { search, category } = req.query;
 
@@ -56,7 +56,7 @@ class ProductController {
   /**
    * Get a specific product by ID
    */
-  static async getProductById(req, res, next) {
+  async getProductById(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -74,7 +74,7 @@ class ProductController {
   /**
    * Update product (Admin only)
    */
-  static async updateProduct(req, res, next) {
+  async updateProduct(req, res, next) {
     try {
       const { id } = req.params;
       const { name, category, unit, seasonStart, seasonEnd, description } = req.body;
@@ -109,7 +109,7 @@ class ProductController {
   /**
    * Delete product (Admin only)
    */
-  static async deleteProduct(req, res, next) {
+  async deleteProduct(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -127,4 +127,4 @@ class ProductController {
   }
 }
 
-module.exports = ProductController;
+module.exports = new ProductController();

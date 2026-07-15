@@ -9,7 +9,7 @@ class AuthController {
   /**
    * Register a new user (and farmer profile if role is farmer)
    */
-  static async register(req, res, next) {
+  async register(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { username, email, password, role = "farmer", firstName, lastName, phone, city, region } = req.body;
@@ -76,7 +76,7 @@ class AuthController {
   /**
    * Log in a user
    */
-  static async login(req, res, next) {
+  async login(req, res, next) {
     try {
       const { email, password } = req.body;
 
@@ -126,7 +126,7 @@ class AuthController {
   /**
    * Get current logged in user details
    */
-  static async getMe(req, res, next) {
+  async getMe(req, res, next) {
     try {
       return ApiResponse.success(res, "User details retrieved", {
         user: req.user
@@ -137,4 +137,4 @@ class AuthController {
   }
 }
 
-module.exports = AuthController;
+module.exports = new AuthController();

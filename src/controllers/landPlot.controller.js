@@ -5,7 +5,7 @@ class LandPlotController {
   /**
    * Create a new land plot
    */
-  static async createLandPlot(req, res, next) {
+  async createLandPlot(req, res, next) {
     try {
       const { name, area, location, soilType, isActive } = req.body;
       let { farmerId } = req.body;
@@ -44,7 +44,7 @@ class LandPlotController {
   /**
    * Get all land plots (Farmers see only their own, Admins see all)
    */
-  static async getAllLandPlots(req, res, next) {
+  async getAllLandPlots(req, res, next) {
     try {
       const where = {};
 
@@ -82,7 +82,7 @@ class LandPlotController {
   /**
    * Get a specific land plot by ID
    */
-  static async getLandPlotById(req, res, next) {
+  async getLandPlotById(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -114,7 +114,7 @@ class LandPlotController {
   /**
    * Update a land plot
    */
-  static async updateLandPlot(req, res, next) {
+  async updateLandPlot(req, res, next) {
     try {
       const { id } = req.params;
       const { name, area, location, soilType, isActive } = req.body;
@@ -146,7 +146,7 @@ class LandPlotController {
   /**
    * Delete a land plot
    */
-  static async deleteLandPlot(req, res, next) {
+  async deleteLandPlot(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -169,4 +169,4 @@ class LandPlotController {
   }
 }
 
-module.exports = LandPlotController;
+module.exports = new LandPlotController();

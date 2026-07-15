@@ -5,7 +5,7 @@ class HarvestController {
   /**
    * Create a new harvest
    */
-  static async createHarvest(req, res, next) {
+  async createHarvest(req, res, next) {
     try {
       const { productId, landPlotId, quantity, unit, harvestDate, status } = req.body;
 
@@ -44,7 +44,7 @@ class HarvestController {
   /**
    * Get all harvests (Farmers see only their own, Admins see all)
    */
-  static async getAllHarvests(req, res, next) {
+  async getAllHarvests(req, res, next) {
     try {
       const where = {};
 
@@ -90,7 +90,7 @@ class HarvestController {
   /**
    * Get a specific harvest by ID
    */
-  static async getHarvestById(req, res, next) {
+  async getHarvestById(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -126,7 +126,7 @@ class HarvestController {
   /**
    * Update a harvest record
    */
-  static async updateHarvest(req, res, next) {
+  async updateHarvest(req, res, next) {
     try {
       const { id } = req.params;
       const { productId, landPlotId, quantity, unit, harvestDate, status } = req.body;
@@ -176,7 +176,7 @@ class HarvestController {
   /**
    * Delete a harvest record
    */
-  static async deleteHarvest(req, res, next) {
+  async deleteHarvest(req, res, next) {
     try {
       const { id } = req.params;
 
@@ -198,4 +198,4 @@ class HarvestController {
   }
 }
 
-module.exports = HarvestController;
+module.exports = new HarvestController();
