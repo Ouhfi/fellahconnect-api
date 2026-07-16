@@ -1,8 +1,10 @@
-const jwt = require("jsonwebtoken");
-const { User, Farmer } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
+import jwt from "jsonwebtoken";
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
 
-async function protect(req, res, next) {
+const { User, Farmer } = db;
+
+export async function protect(req, res, next) {
   try {
     let token;
 
@@ -45,5 +47,3 @@ async function protect(req, res, next) {
     return ApiResponse.error(res, "Not authorized, token failed", 401);
   }
 }
-
-module.exports = { protect };

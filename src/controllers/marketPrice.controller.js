@@ -1,6 +1,8 @@
-const { MarketPrice, Market, Product } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
-const { Op } = require("sequelize");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+import { Op } from "sequelize";
+
+const { MarketPrice, Market, Product } = db;
 
 class MarketPriceController {
   /**
@@ -192,4 +194,4 @@ class MarketPriceController {
   }
 }
 
-module.exports = new MarketPriceController();
+export default new MarketPriceController();

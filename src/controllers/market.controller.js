@@ -1,5 +1,7 @@
-const { Market } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+
+const { Market } = db;
 
 class MarketController {
   /**
@@ -114,4 +116,4 @@ class MarketController {
   }
 }
 
-module.exports = new MarketController();
+export default new MarketController();

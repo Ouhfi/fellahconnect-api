@@ -1,5 +1,7 @@
-const { Harvest, LandPlot, Product, Farmer } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+
+const { Harvest, LandPlot, Product, Farmer } = db;
 
 class HarvestController {
   /**
@@ -198,4 +200,4 @@ class HarvestController {
   }
 }
 
-module.exports = new HarvestController();
+export default new HarvestController();

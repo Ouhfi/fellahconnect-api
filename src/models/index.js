@@ -1,35 +1,31 @@
-"use strict";
+import { Sequelize, DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
-const fs = require("fs");
-const path = require("path");
-const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+import defineUser from "./User.js";
+import defineFarmer from "./Farmer.js";
+import defineProduct from "./Product.js";
+import defineLandPlot from "./LandPlot.js";
+import defineHarvest from "./Harvest.js";
+import defineMarket from "./Market.js";
+import defineMarketPrice from "./MarketPrice.js";
+import defineSaleOffer from "./SaleOffer.js";
+import setupAssociations from "./associations.js";
 
-const basename = path.basename(__filename);
-const db = {};
+const db = {
+  User: defineUser(sequelize, DataTypes),
+  Farmer: defineFarmer(sequelize, DataTypes),
+  Product: defineProduct(sequelize, DataTypes),
+  LandPlot: defineLandPlot(sequelize, DataTypes),
+  Harvest: defineHarvest(sequelize, DataTypes),
+  Market: defineMarket(sequelize, DataTypes),
+  MarketPrice: defineMarketPrice(sequelize, DataTypes),
+  SaleOffer: defineSaleOffer(sequelize, DataTypes),
+};
 
-
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 &&
-      file !== basename &&
-      file.slice(-3) === ".js" &&
-      file !== "associations.js"
-    );
-  })
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(sequelize, DataTypes);
-    db[model.name] = model;
-  });
-
-
-if (fs.existsSync(path.join(__dirname, "associations.js"))) {
-  require("./associations")(db);
-}
-
+setupAssociations(db);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export { sequelize, Sequelize };
+export default db;

@@ -1,8 +1,9 @@
-const { Pinecone } = require('@pinecone-database/pinecone');
-const logger = require('../utils/logger');
+import { Pinecone } from '@pinecone-database/pinecone';
+import logger from '../utils/logger.js';
+import env from './env.js';
 
-const apiKey = process.env.PINECONE_API_KEY;
-const indexName = process.env.PINECONE_INDEX_NAME || 'fellahconnect-index';
+const apiKey = env.PINECONE_API_KEY;
+const indexName = env.PINECONE_INDEX_NAME || 'fellahconnect-index';
 
 let pinecone = null;
 let pineconeIndex = null;
@@ -19,7 +20,7 @@ if (apiKey) {
   logger.warn('PINECONE_API_KEY is not defined in the environment. Pinecone features will be disabled.');
 }
 
-module.exports = {
+export {
   pinecone,
   pineconeIndex,
 };

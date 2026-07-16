@@ -1,17 +1,14 @@
-require("dotenv").config();
-
-const app = require("./app");
-const db = require("./models");
+import "./config/env.js";
+import app from "./app.js";
+import db from "./models/index.js";
 
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   try {
-    
     await db.sequelize.authenticate();
     console.log(" Database connected successfully.");
 
-    
     await db.sequelize.sync();
 
     app.listen(PORT, () => {

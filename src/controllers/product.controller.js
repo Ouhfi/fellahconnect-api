@@ -1,6 +1,8 @@
-const { Product } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
-const { Op } = require("sequelize");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+import { Op } from "sequelize";
+
+const { Product } = db;
 
 class ProductController {
   /**
@@ -127,4 +129,4 @@ class ProductController {
   }
 }
 
-module.exports = new ProductController();
+export default new ProductController();

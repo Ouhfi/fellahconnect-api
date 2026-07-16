@@ -1,10 +1,10 @@
-const ApiResponse = require("../utils/apiResponse");
-const logger = require("../utils/logger");
+import ApiResponse from "../utils/apiResponse.js";
+import logger from "../utils/logger.js";
 
 /**
  * Centralized error-handling middleware
  */
-function errorHandler(err, req, res, next) {
+export default function errorHandler(err, req, res, next) {
   // Log error using Winston logger
   logger.error(`${err.message} \nStack: ${err.stack}`);
 
@@ -45,5 +45,3 @@ function errorHandler(err, req, res, next) {
 
   return ApiResponse.error(res, message, statusCode, process.env.NODE_ENV === "development" ? err.stack : null);
 }
-
-module.exports = errorHandler;

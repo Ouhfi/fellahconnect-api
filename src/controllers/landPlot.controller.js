@@ -1,5 +1,7 @@
-const { LandPlot, Farmer } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+
+const { LandPlot, Farmer } = db;
 
 class LandPlotController {
   /**
@@ -169,4 +171,4 @@ class LandPlotController {
   }
 }
 
-module.exports = new LandPlotController();
+export default new LandPlotController();

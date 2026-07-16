@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const createMarketSchema = z.object({
   name: z.string({
@@ -23,7 +23,10 @@ const createMarketSchema = z.object({
 
 const updateMarketSchema = createMarketSchema.partial();
 
-module.exports = {
-  createMarket: z.object({ body: createMarketSchema }),
-  updateMarket: z.object({ body: updateMarketSchema }),
+export const createMarket = z.object({ body: createMarketSchema });
+export const updateMarket = z.object({ body: updateMarketSchema });
+
+export default {
+  createMarket,
+  updateMarket,
 };

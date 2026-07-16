@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import harvestController from "../controllers/harvest.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import harvestValidator from "../validators/harvest.validator.js";
+import { protect } from "../middlewares/auth.middleware.js";
+
 const router = express.Router();
-const harvestController = require("../controllers/harvest.controller");
-const validate = require("../middlewares/validate.middleware");
-const harvestValidator = require("../validators/harvest.validator");
-const { protect } = require("../middlewares/auth.middleware");
 
 // Create harvest entry
 router.post("/", protect, validate(harvestValidator.createHarvest), harvestController.createHarvest);
@@ -20,4 +21,4 @@ router.put("/:id", protect, validate(harvestValidator.updateHarvest), harvestCon
 // Delete harvest
 router.delete("/:id", protect, harvestController.deleteHarvest);
 
-module.exports = router;
+export default router;

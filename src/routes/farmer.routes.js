@@ -1,10 +1,11 @@
-const express = require("express");
+import express from "express";
+import farmerController from "../controllers/farmer.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import farmerValidator from "../validators/farmer.validator.js";
+import { protect } from "../middlewares/auth.middleware.js";
+import { restrictTo } from "../middlewares/role.middleware.js";
+
 const router = express.Router();
-const farmerController = require("../controllers/farmer.controller");
-const validate = require("../middlewares/validate.middleware");
-const farmerValidator = require("../validators/farmer.validator");
-const { protect } = require("../middlewares/auth.middleware");
-const { restrictTo } = require("../middlewares/role.middleware");
 
 // Get all farmer profiles
 router.get("/", protect, farmerController.getAllFarmers);
@@ -18,4 +19,4 @@ router.put("/:id", protect, validate(farmerValidator.updateFarmer), farmerContro
 // Verify farmer (Admin only)
 router.patch("/:id/verify", protect, restrictTo("admin"), validate(farmerValidator.verifyFarmer), farmerController.verifyFarmer);
 
-module.exports = router;
+export default router;

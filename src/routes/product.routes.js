@@ -1,10 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const productController = require("../controllers/product.controller");
-const validate = require("../middlewares/validate.middleware");
-const productValidator = require("../validators/product.validator");
-const { protect } = require("../middlewares/auth.middleware");
-const { restrictTo } = require("../middlewares/role.middleware");
+import express from "express";
+import productController from "../controllers/product.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import productValidator from "../validators/product.validator.js";
+import { protect } from "../middlewares/auth.middleware.js";
+import { restrictTo } from "../middlewares/role.middleware.js";
+
+const router = Router();
+
+function Router() {
+  return express.Router();
+}
 
 // Create product (Admin only)
 router.post("/", protect, restrictTo("admin"), validate(productValidator.createProduct), productController.createProduct);
@@ -21,4 +26,4 @@ router.put("/:id", protect, restrictTo("admin"), validate(productValidator.updat
 // Delete product (Admin only)
 router.delete("/:id", protect, restrictTo("admin"), productController.deleteProduct);
 
-module.exports = router;
+export default router;

@@ -1,8 +1,9 @@
-const { User, Farmer, sequelize } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+const { User, Farmer, sequelize } = db;
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key_here";
 
 class AuthController {
@@ -137,4 +138,4 @@ class AuthController {
   }
 }
 
-module.exports = new AuthController();
+export default new AuthController();

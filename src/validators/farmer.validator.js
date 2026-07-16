@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const updateFarmerSchema = z.object({
   firstName: z.string().min(2).max(50).optional(),
@@ -14,7 +14,10 @@ const verifyFarmerSchema = z.object({
   }),
 });
 
-module.exports = {
-  updateFarmer: z.object({ body: updateFarmerSchema }),
-  verifyFarmer: z.object({ body: verifyFarmerSchema }),
+export const updateFarmer = z.object({ body: updateFarmerSchema });
+export const verifyFarmer = z.object({ body: verifyFarmerSchema });
+
+export default {
+  updateFarmer,
+  verifyFarmer,
 };

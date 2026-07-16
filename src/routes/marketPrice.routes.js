@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import marketPriceController from "../controllers/marketPrice.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import marketPriceValidator from "../validators/marketPrice.validator.js";
+
 const router = express.Router();
-const marketPriceController = require("../controllers/marketPrice.controller");
-const validate = require("../middlewares/validate.middleware");
-const marketPriceValidator = require("../validators/marketPrice.validator");
 
 // Create a new market price entry
 router.post("/", validate(marketPriceValidator.createMarketPrice), marketPriceController.createMarketPrice);
@@ -22,4 +23,4 @@ router.put("/:id", validate(marketPriceValidator.updateMarketPrice), marketPrice
 // Delete a market price entry
 router.delete("/:id", marketPriceController.deleteMarketPrice);
 
-module.exports = router;
+export default router;

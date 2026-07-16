@@ -1,6 +1,6 @@
-const ApiResponse = require('../utils/apiResponse');
+import ApiResponse from '../utils/apiResponse.js';
 
-function validate(schemas) {
+export default function validate(schemas) {
   return async function (req, res, next) {
     try {
       if (schemas.body) {
@@ -27,5 +27,3 @@ function validate(schemas) {
     }
   };
 }
-
-module.exports = validate;

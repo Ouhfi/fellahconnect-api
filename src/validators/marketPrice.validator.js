@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const createMarketPriceSchema = z.object({
   marketId: z.coerce.number({
@@ -28,7 +28,10 @@ const updateMarketPriceSchema = z.object({
   priceDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Price date must be in YYYY-MM-DD format').optional(),
 });
 
-module.exports = {
-  createMarketPrice: z.object({ body: createMarketPriceSchema }),
-  updateMarketPrice: z.object({ body: updateMarketPriceSchema }),
+export const createMarketPrice = z.object({ body: createMarketPriceSchema });
+export const updateMarketPrice = z.object({ body: updateMarketPriceSchema });
+
+export default {
+  createMarketPrice,
+  updateMarketPrice,
 };

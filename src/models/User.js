@@ -1,7 +1,7 @@
-const { Model } = require("sequelize");
-const bcrypt = require("bcrypt");
+import { Model } from "sequelize";
+import bcrypt from "bcrypt";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       

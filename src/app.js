@@ -1,8 +1,18 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const logger = require("./utils/logger");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import logger from "./utils/logger.js";
+import authRoutes from "./routes/auth.routes.js";
+import farmerRoutes from "./routes/farmer.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import landPlotRoutes from "./routes/landPlot.routes.js";
+import harvestRoutes from "./routes/harvest.routes.js";
+import marketRoutes from "./routes/market.routes.js";
+import saleOfferRoutes from "./routes/saleOffer.routes.js";
+import marketPriceRoutes from "./routes/marketPrice.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
+import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -25,16 +35,15 @@ app.get("/health", (req, res) => {
 });
 
 // Route Registrations
-app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/farmers", require("./routes/farmer.routes"));
-app.use("/api/products", require("./routes/product.routes"));
-app.use("/api/land-plots", require("./routes/landPlot.routes"));
-app.use("/api/harvests", require("./routes/harvest.routes"));
-app.use("/api/markets", require("./routes/market.routes"));
-app.use("/api/sale-offers", require("./routes/saleOffer.routes"));
-app.use("/api/market-prices", require("./routes/marketPrice.routes"));
-
-const errorHandler = require("./middlewares/error.middleware");
+app.use("/api/auth", authRoutes);
+app.use("/api/farmers", farmerRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/land-plots", landPlotRoutes);
+app.use("/api/harvests", harvestRoutes);
+app.use("/api/markets", marketRoutes);
+app.use("/api/sale-offers", saleOfferRoutes);
+app.use("/api/market-prices", marketPriceRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
@@ -42,4 +51,4 @@ app.use((req, res) => {
 
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

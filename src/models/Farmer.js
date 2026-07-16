@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require("sequelize");
+import { Model, DataTypes } from "sequelize";
 
-module.exports = (sequelize) => {
+export default (sequelize) => {
   class Farmer extends Model {
     static associate(models) {
       Farmer.belongsTo(models.User, {

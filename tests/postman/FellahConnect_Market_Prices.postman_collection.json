@@ -1,0 +1,362 @@
+{
+  "info": {
+    "_postman_id": "8f8e02ea-d437-4d94-8ff1-1b91361c4720",
+    "name": "FellahConnect - Market Prices & History API",
+    "description": "Collection for testing and checking market prices, price histories, and related endpoints for the FellahConnect smart agriculture platform.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Farmer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"farmer_test\",\n  \"email\": \"farmer_test@fellahconnect.com\",\n  \"password\": \"password123\",\n  \"role\": \"farmer\",\n  \"firstName\": \"Ahmed\",\n  \"lastName\": \"Benali\",\n  \"phone\": \"+212612345678\",\n  \"city\": \"Casablanca\",\n  \"region\": \"Casablanca-Settat\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson = pm.response.json();",
+                  "if (responseJson.success && responseJson.data && responseJson.data.token) {",
+                  "    pm.collectionVariables.set(\"token\", responseJson.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"farmer_test@fellahconnect.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile (Me)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Market Prices",
+      "item": [
+        {
+          "name": "Get All Market Prices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/market-prices?marketId=1&productId=1&quality=A&startDate=2026-07-01&endDate=2026-07-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "market-prices"
+              ],
+              "query": [
+                {
+                  "key": "marketId",
+                  "value": "1",
+                  "description": "Filter by market ID (e.g. 1 for Casablanca)"
+                },
+                {
+                  "key": "productId",
+                  "value": "1",
+                  "description": "Filter by product ID (e.g. 1 for Tomatoes)"
+                },
+                {
+                  "key": "quality",
+                  "value": "A",
+                  "description": "Filter by quality grade (A, B, C)"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2026-07-01",
+                  "description": "Start date for price history"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2026-07-31",
+                  "description": "End date for price history"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Market Price History (Charts)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/market-prices/history/{{marketId}}/{{productId}}?quality=A&startDate=2026-07-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "market-prices",
+                "history",
+                "{{marketId}}",
+                "{{productId}}"
+              ],
+              "query": [
+                {
+                  "key": "quality",
+                  "value": "A"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2026-07-01"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Market Price By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/market-prices/{{priceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "market-prices",
+                "{{priceId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Market Price (Admin only)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketId\": 1,\n  \"productId\": 1,\n  \"quality\": \"A\",\n  \"price\": 5.90,\n  \"priceDate\": \"2026-07-16\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/market-prices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "market-prices"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Market Price",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 6.20,\n  \"quality\": \"A\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/market-prices/{{priceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "market-prices",
+                "{{priceId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Market Price",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/market-prices/{{priceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "market-prices",
+                "{{priceId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "marketId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "priceId",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}

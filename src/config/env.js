@@ -1,6 +1,10 @@
-const dotenv = require("dotenv");
-const { z } = require("zod");
-const path = require("path");
+import dotenv from "dotenv";
+import { z } from "zod";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load the environment variables from the root .env file
 dotenv.config({ path: path.join(__dirname, "../../.env") });
@@ -42,4 +46,4 @@ if (!parsedEnv.success) {
   process.exit(1);
 }
 
-module.exports = parsedEnv.data;
+export default parsedEnv.data;

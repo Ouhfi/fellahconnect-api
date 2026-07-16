@@ -1,5 +1,7 @@
-const { SaleOffer, Harvest, Market, Farmer, Product } = require("../models");
-const ApiResponse = require("../utils/apiResponse");
+import db from "../models/index.js";
+import ApiResponse from "../utils/apiResponse.js";
+
+const { SaleOffer, Harvest, Market, Farmer, Product } = db;
 
 class SaleOfferController {
   /**
@@ -229,4 +231,4 @@ class SaleOfferController {
   }
 }
 
-module.exports = new SaleOfferController();
+export default new SaleOfferController();

@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import saleOfferController from "../controllers/saleOffer.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import saleOfferValidator from "../validators/saleOffer.validator.js";
+import { protect } from "../middlewares/auth.middleware.js";
+
 const router = express.Router();
-const saleOfferController = require("../controllers/saleOffer.controller");
-const validate = require("../middlewares/validate.middleware");
-const saleOfferValidator = require("../validators/saleOffer.validator");
-const { protect } = require("../middlewares/auth.middleware");
 
 // Create sale offer
 router.post("/", protect, validate(saleOfferValidator.createSaleOffer), saleOfferController.createSaleOffer);
@@ -20,4 +21,4 @@ router.put("/:id", protect, validate(saleOfferValidator.updateSaleOffer), saleOf
 // Delete sale offer
 router.delete("/:id", protect, saleOfferController.deleteSaleOffer);
 
-module.exports = router;
+export default router;

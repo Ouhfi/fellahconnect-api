@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import landPlotController from "../controllers/landPlot.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import landPlotValidator from "../validators/landPlot.validator.js";
+import { protect } from "../middlewares/auth.middleware.js";
+
 const router = express.Router();
-const landPlotController = require("../controllers/landPlot.controller");
-const validate = require("../middlewares/validate.middleware");
-const landPlotValidator = require("../validators/landPlot.validator");
-const { protect } = require("../middlewares/auth.middleware");
 
 // Create land plot
 router.post("/", protect, validate(landPlotValidator.createLandPlot), landPlotController.createLandPlot);
@@ -20,4 +21,4 @@ router.put("/:id", protect, validate(landPlotValidator.updateLandPlot), landPlot
 // Delete land plot
 router.delete("/:id", protect, landPlotController.deleteLandPlot);
 
-module.exports = router;
+export default router;

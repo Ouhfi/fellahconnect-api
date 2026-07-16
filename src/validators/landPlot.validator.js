@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const createLandPlotSchema = z.object({
   farmerId: z.coerce.number().int().positive().optional(), // optional because we get it from req.user for farmers
@@ -23,7 +23,10 @@ const createLandPlotSchema = z.object({
 
 const updateLandPlotSchema = createLandPlotSchema.partial();
 
-module.exports = {
-  createLandPlot: z.object({ body: createLandPlotSchema }),
-  updateLandPlot: z.object({ body: updateLandPlotSchema }),
+export const createLandPlot = z.object({ body: createLandPlotSchema });
+export const updateLandPlot = z.object({ body: updateLandPlotSchema });
+
+export default {
+  createLandPlot,
+  updateLandPlot,
 };

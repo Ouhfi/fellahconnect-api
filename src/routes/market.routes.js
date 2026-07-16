@@ -1,10 +1,11 @@
-const express = require("express");
+import express from "express";
+import marketController from "../controllers/market.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import marketValidator from "../validators/market.validator.js";
+import { protect } from "../middlewares/auth.middleware.js";
+import { restrictTo } from "../middlewares/role.middleware.js";
+
 const router = express.Router();
-const marketController = require("../controllers/market.controller");
-const validate = require("../middlewares/validate.middleware");
-const marketValidator = require("../validators/market.validator");
-const { protect } = require("../middlewares/auth.middleware");
-const { restrictTo } = require("../middlewares/role.middleware");
 
 // Create a new market (Admin only)
 router.post("/", protect, restrictTo("admin"), validate(marketValidator.createMarket), marketController.createMarket);
@@ -21,4 +22,4 @@ router.put("/:id", protect, restrictTo("admin"), validate(marketValidator.update
 // Delete a market (Admin only)
 router.delete("/:id", protect, restrictTo("admin"), marketController.deleteMarket);
 
-module.exports = router;
+export default router;

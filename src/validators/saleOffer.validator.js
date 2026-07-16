@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const createSaleOfferSchema = z.object({
   harvestId: z.coerce.number({
@@ -28,7 +28,10 @@ const createSaleOfferSchema = z.object({
 
 const updateSaleOfferSchema = createSaleOfferSchema.partial();
 
-module.exports = {
-  createSaleOffer: z.object({ body: createSaleOfferSchema }),
-  updateSaleOffer: z.object({ body: updateSaleOfferSchema }),
+export const createSaleOffer = z.object({ body: createSaleOfferSchema });
+export const updateSaleOffer = z.object({ body: updateSaleOfferSchema });
+
+export default {
+  createSaleOffer,
+  updateSaleOffer,
 };

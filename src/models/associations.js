@@ -1,4 +1,4 @@
-module.exports = (models) => {
+export default (models) => {
   const {
     User,
     Farmer,

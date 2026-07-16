@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const createProductSchema = z.object({
   name: z.string({
@@ -20,7 +20,10 @@ const createProductSchema = z.object({
 
 const updateProductSchema = createProductSchema.partial();
 
-module.exports = {
-  createProduct: z.object({ body: createProductSchema }),
-  updateProduct: z.object({ body: updateProductSchema }),
+export const createProduct = z.object({ body: createProductSchema });
+export const updateProduct = z.object({ body: updateProductSchema });
+
+export default {
+  createProduct,
+  updateProduct,
 };

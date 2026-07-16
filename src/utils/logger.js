@@ -1,4 +1,4 @@
-const winston = require('winston');
+import winston from 'winston';
 
 // Define log colors and levels
 const levels = {
@@ -38,4 +38,4 @@ const logger = winston.createLogger({
   ],
 });
 
-module.exports = logger;
+export default logger;
