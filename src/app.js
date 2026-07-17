@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+import { readFileSync } from "fs";
 import logger from "./utils/logger.js";
 import authRoutes from "./routes/auth.routes.js";
 import farmerRoutes from "./routes/farmer.routes.js";
@@ -14,9 +16,15 @@ import marketPriceRoutes from "./routes/marketPrice.routes.js";
 import aiRoutes from "./routes/ai.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
+const swaggerDocument = JSON.parse(
+  readFileSync(new URL("./docs/swagger.json", import.meta.url), "utf-8")
+);
+
 const app = express();
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false // Disable CSP for Swagger UI to load assets correctly
+}));
 app.use(cors());
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms", {
@@ -44,6 +52,9 @@ app.use("/api/markets", marketRoutes);
 app.use("/api/sale-offers", saleOfferRoutes);
 app.use("/api/market-prices", marketPriceRoutes);
 app.use("/api/ai", aiRoutes);
+
+// Swagger Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
