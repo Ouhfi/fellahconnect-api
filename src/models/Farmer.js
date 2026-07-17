@@ -52,7 +52,7 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^(\\+212|0)[5-7][0-9]{8}$/,
+          is: /^(\+212|0)[5-7][0-9]{8}$/,
         },
       },
 
