@@ -1,0 +1,134 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "searchProducts",
+      "description": "Search for products (like tomatoes, potatoes, oranges) in the database to resolve their ID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The product name to search for (e.g. 'tomato' or 'potato')."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "searchMarkets",
+      "description": "Search for wholesale or local markets in Morocco to resolve their ID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The market name or city to search for (e.g. 'Casablanca' or 'Agadir')."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "getCurrentMarketPrices",
+      "description": "Get current market prices for a specific product and/or market.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "The unique ID of the product."
+          },
+          "marketId": {
+            "type": "integer",
+            "description": "The unique ID of the market."
+          },
+          "quality": {
+            "type": "string",
+            "description": "The quality grade of the product (e.g. 'A', 'B')."
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "getBestMarketForProduct",
+      "description": "Find the markets offering the highest prices for a specific product.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "The unique ID of the product."
+          },
+          "quality": {
+            "type": "string",
+            "description": "The quality grade of the product (e.g. 'A')."
+          }
+        },
+        "required": [
+          "productId"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "getPriceHistory",
+      "description": "Get historical price trends for a product in a market to analyze price changes over time.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "The unique ID of the product."
+          },
+          "marketId": {
+            "type": "integer",
+            "description": "The unique ID of the market."
+          },
+          "quality": {
+            "type": "string",
+            "description": "The quality grade of the product (e.g. 'A')."
+          }
+        },
+        "required": [
+          "productId",
+          "marketId"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "searchAgriculturalGuides",
+      "description": "Search the Pinecone vector database for agricultural guides, disease treatment, planting instructions, and storage tips.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query in English, French, or Darija (e.g. 'tomato mildew' or 'orange irrigation' or 'batata')."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  }
+]

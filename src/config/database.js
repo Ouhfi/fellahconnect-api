@@ -1,15 +1,16 @@
-const { Sequelize } = require("sequelize");
-const dbConfig = require("./config")[process.env.NODE_ENV || "development"];
+import { Sequelize } from "sequelize";
+import env from "./env.js";
 
 const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
+  env.DB_NAME,
+  env.DB_USER,
+  env.DB_PASSWORD,
   {
-    host: dbConfig.host,
-    port: dbConfig.port,
-    dialect: dbConfig.dialect,
-    logging: dbConfig.logging,
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    dialect: "postgres",
+    logging: false,
+
     pool: {
       max: 5,
       min: 0,
@@ -19,4 +20,4 @@ const sequelize = new Sequelize(
   }
 );
 
-module.exports = sequelize;
+export default sequelize;

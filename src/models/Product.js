@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize) => {
+export default (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
       Product.hasMany(models.Harvest, {
@@ -18,8 +18,8 @@ module.exports = (sequelize) => {
   Product.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
 

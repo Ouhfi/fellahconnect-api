@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require("sequelize");
+import { Model, DataTypes } from "sequelize";
 
-module.exports = (sequelize) => {
+export default (sequelize) => {
   class Farmer extends Model {
     static associate(models) {
       Farmer.belongsTo(models.User, {
@@ -28,13 +28,13 @@ module.exports = (sequelize) => {
   Farmer.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
 
       userId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
@@ -52,7 +52,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^(\\+212|0)[5-7][0-9]{8}$/,
+          is: /^(\+212|0)[5-7][0-9]{8}$/,
         },
       },
 

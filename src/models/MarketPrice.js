@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize) => {
+export default (sequelize, DataTypes) => {
   class MarketPrice extends Model {
     static associate(models) {
       MarketPrice.belongsTo(models.Market, {
@@ -18,18 +18,18 @@ module.exports = (sequelize) => {
   MarketPrice.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
 
       marketId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
       productId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 

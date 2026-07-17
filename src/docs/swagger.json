@@ -1,0 +1,776 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FellahConnect API",
+    "description": "AI-powered Smart Agriculture Platform for Moroccan Farmers 🇲🇦",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your JWT token in the format: Bearer <token>"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "username": { "type": "string", "example": "ahmed_farmer" },
+          "email": { "type": "string", "format": "email", "example": "ahmed@fellahconnect.com" },
+          "role": { "type": "string", "enum": ["admin", "farmer"], "example": "farmer" },
+          "isActive": { "type": "boolean", "example": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Farmer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "userId": { "type": "integer", "example": 2 },
+          "firstName": { "type": "string", "example": "Ahmed" },
+          "lastName": { "type": "string", "example": "Benali" },
+          "phone": { "type": "string", "example": "+212612345678" },
+          "city": { "type": "string", "example": "Casablanca" },
+          "region": { "type": "string", "example": "Casablanca-Settat" },
+          "isVerified": { "type": "boolean", "example": false },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Tomatoes" },
+          "category": { "type": "string", "example": "Vegetable" },
+          "unit": { "type": "string", "example": "kg" },
+          "seasonStart": { "type": "integer", "minimum": 1, "maximum": 12, "example": 4 },
+          "seasonEnd": { "type": "integer", "minimum": 1, "maximum": 12, "example": 10 },
+          "description": { "type": "string", "example": "Fresh Moroccan red tomatoes." }
+        }
+      },
+      "Market": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Casablanca Marché de Gros" },
+          "city": { "type": "string", "example": "Casablanca" },
+          "region": { "type": "string", "example": "Casablanca-Settat" }
+        }
+      },
+      "MarketPrice": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "marketId": { "type": "integer", "example": 1 },
+          "productId": { "type": "integer", "example": 1 },
+          "price": { "type": "number", "format": "float", "example": 5.5 },
+          "quality": { "type": "string", "enum": ["A", "B", "C"], "example": "A" },
+          "priceDate": { "type": "string", "format": "date", "example": "2026-07-17" }
+        }
+      },
+      "LandPlot": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "farmerId": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Plot A - Souss Valley" },
+          "location": { "type": "string", "example": "Taroudant" },
+          "size": { "type": "number", "format": "float", "example": 5.2 },
+          "cropType": { "type": "string", "example": "Tomatoes" }
+        }
+      },
+      "Harvest": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "landPlotId": { "type": "integer", "example": 1 },
+          "quantity": { "type": "number", "format": "float", "example": 1200 },
+          "harvestDate": { "type": "string", "format": "date", "example": "2026-07-17" },
+          "notes": { "type": "string", "example": "High quality yield." }
+        }
+      },
+      "SaleOffer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "farmerId": { "type": "integer", "example": 1 },
+          "productId": { "type": "integer", "example": 1 },
+          "quantity": { "type": "number", "format": "float", "example": 500 },
+          "pricePerUnit": { "type": "number", "format": "float", "example": 6 },
+          "status": { "type": "string", "enum": ["available", "sold", "cancelled"], "example": "available" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user (with dynamic farmer profile)",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "email", "password"],
+                "properties": {
+                  "username": { "type": "string", "example": "ahmed_farmer" },
+                  "email": { "type": "string", "example": "ahmed@fellahconnect.com" },
+                  "password": { "type": "string", "example": "password123" },
+                  "role": { "type": "string", "enum": ["admin", "farmer"], "default": "farmer", "example": "farmer" },
+                  "firstName": { "type": "string", "example": "Ahmed" },
+                  "lastName": { "type": "string", "example": "Benali" },
+                  "phone": { "type": "string", "example": "+212612345678" },
+                  "city": { "type": "string", "example": "Casablanca" },
+                  "region": { "type": "string", "example": "Casablanca-Settat" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": { "type": "string", "example": "eyJhbGciOi..." },
+                        "user": { "$ref": "#/components/schemas/User" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Log in an existing user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "example": "admin@fellahconnect.com" },
+                  "password": { "type": "string", "example": "admin123" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": { "type": "string", "example": "eyJhbGciOi..." },
+                        "user": { "$ref": "#/components/schemas/User" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "summary": "Get details of the currently logged in user",
+        "tags": ["Auth"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Current user profile retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/farmers": {
+      "get": {
+        "summary": "Get all farmer profiles",
+        "tags": ["Farmers"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Farmer list retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Farmer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/farmers/{id}": {
+      "get": {
+        "summary": "Get a specific farmer profile by ID",
+        "tags": ["Farmers"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Farmer" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update farmer profile details",
+        "tags": ["Farmers"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": { "type": "string" },
+                  "lastName": { "type": "string" },
+                  "phone": { "type": "string" },
+                  "city": { "type": "string" },
+                  "region": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Profile updated" }
+        }
+      }
+    },
+    "/api/farmers/{id}/verify": {
+      "patch": {
+        "summary": "Verify a farmer profile (Admin Only)",
+        "tags": ["Farmers"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["isVerified"],
+                "properties": {
+                  "isVerified": { "type": "boolean", "example": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Verification status updated successfully" }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "summary": "Get all products",
+        "tags": ["Products"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new product (Admin Only)",
+        "tags": ["Products"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "category", "unit", "seasonStart", "seasonEnd"],
+                "properties": {
+                  "name": { "type": "string", "example": "Apples" },
+                  "category": { "type": "string", "example": "Fruit" },
+                  "unit": { "type": "string", "example": "kg" },
+                  "seasonStart": { "type": "integer", "example": 8 },
+                  "seasonEnd": { "type": "integer", "example": 12 },
+                  "description": { "type": "string", "example": "Fresh local apples" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Product created successfully" }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "summary": "Get product details by ID",
+        "tags": ["Products"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update product details (Admin Only)",
+        "tags": ["Products"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "category": { "type": "string" },
+                  "unit": { "type": "string" },
+                  "seasonStart": { "type": "integer" },
+                  "seasonEnd": { "type": "integer" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Product updated" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a product (Admin Only)",
+        "tags": ["Products"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Product deleted successfully" }
+        }
+      }
+    },
+    "/api/markets": {
+      "get": {
+        "summary": "Get all markets",
+        "tags": ["Markets"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Market" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new market (Admin Only)",
+        "tags": ["Markets"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "city", "region"],
+                "properties": {
+                  "name": { "type": "string", "example": "Meknes Wholesale Market" },
+                  "city": { "type": "string", "example": "Meknes" },
+                  "region": { "type": "string", "example": "Fes-Meknes" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Market created" }
+        }
+      }
+    },
+    "/api/markets/{id}": {
+      "get": {
+        "summary": "Get market details by ID",
+        "tags": ["Markets"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Market" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update market details (Admin Only)",
+        "tags": ["Markets"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "city": { "type": "string" },
+                  "region": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Market updated" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a market (Admin Only)",
+        "tags": ["Markets"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Market deleted" }
+        }
+      }
+    },
+    "/api/market-prices": {
+      "get": {
+        "summary": "Get all market prices with filtering",
+        "tags": ["Market Prices"],
+        "parameters": [
+          { "name": "marketId", "in": "query", "required": false, "schema": { "type": "integer" } },
+          { "name": "productId", "in": "query", "required": false, "schema": { "type": "integer" } },
+          { "name": "quality", "in": "query", "required": false, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MarketPrice" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a market price entry",
+        "tags": ["Market Prices"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["marketId", "productId", "price", "quality", "priceDate"],
+                "properties": {
+                  "marketId": { "type": "integer", "example": 1 },
+                  "productId": { "type": "integer", "example": 1 },
+                  "price": { "type": "number", "example": 5.5 },
+                  "quality": { "type": "string", "example": "A" },
+                  "priceDate": { "type": "string", "example": "2026-07-17" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Price entry created" }
+        }
+      }
+    },
+    "/api/market-prices/history/{marketId}/{productId}": {
+      "get": {
+        "summary": "Get market price history for charts",
+        "tags": ["Market Prices"],
+        "parameters": [
+          { "name": "marketId", "in": "path", "required": true, "schema": { "type": "integer" } },
+          { "name": "productId", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical price array retrieved"
+          }
+        }
+      }
+    },
+    "/api/land-plots": {
+      "get": {
+        "summary": "Get all land plots",
+        "tags": ["Land Plots"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LandPlot" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new land plot",
+        "tags": ["Land Plots"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "location", "size", "cropType"],
+                "properties": {
+                  "name": { "type": "string", "example": "Plot C" },
+                  "location": { "type": "string", "example": "Souss" },
+                  "size": { "type": "number", "example": 10 },
+                  "cropType": { "type": "string", "example": "Oranges" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Land plot created" }
+        }
+      }
+    },
+    "/api/harvests": {
+      "get": {
+        "summary": "Get all harvests",
+        "tags": ["Harvests"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Harvest" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a harvest entry",
+        "tags": ["Harvests"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["landPlotId", "quantity", "harvestDate"],
+                "properties": {
+                  "landPlotId": { "type": "integer", "example": 1 },
+                  "quantity": { "type": "number", "example": 800 },
+                  "harvestDate": { "type": "string", "example": "2026-07-17" },
+                  "notes": { "type": "string", "example": "Bumper crop yield." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Harvest entry recorded" }
+        }
+      }
+    },
+    "/api/sale-offers": {
+      "get": {
+        "summary": "Get all sale offers",
+        "tags": ["Sale Offers"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SaleOffer" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new sale offer",
+        "tags": ["Sale Offers"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["productId", "quantity", "pricePerUnit"],
+                "properties": {
+                  "productId": { "type": "integer", "example": 1 },
+                  "quantity": { "type": "number", "example": 1500 },
+                  "pricePerUnit": { "type": "number", "example": 5.2 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Sale offer created" }
+        }
+      }
+    },
+    "/api/ai/chat": {
+      "post": {
+        "summary": "Retrieve grounded agricultural advice and market intelligence",
+        "tags": ["AI Assistant"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["prompt"],
+                "properties": {
+                  "prompt": { "type": "string", "example": "kifach n3ref milidou dyal maticha?" },
+                  "history": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": { "type": "string", "example": "user" },
+                        "content": { "type": "string", "example": "salam" }
+                      }
+                    },
+                    "example": []
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI reply successfully generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "AI response generated successfully" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "response": { "type": "string" },
+                        "history": { "type": "array", "items": { "type": "object" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

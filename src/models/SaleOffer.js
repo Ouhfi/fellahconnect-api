@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize) => {
+export default (sequelize, DataTypes) => {
   class SaleOffer extends Model {
     static associate(models) {
       SaleOffer.belongsTo(models.Farmer, {
@@ -23,23 +23,23 @@ module.exports = (sequelize) => {
   SaleOffer.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
 
       farmerId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
       harvestId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
       marketId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
