@@ -9,6 +9,7 @@ import defineHarvest from "./Harvest.js";
 import defineMarket from "./Market.js";
 import defineMarketPrice from "./MarketPrice.js";
 import defineSaleOffer from "./SaleOffer.js";
+import defineMessage from "./Message.js";
 import setupAssociations from "./associations.js";
 
 const db = {
@@ -20,6 +21,7 @@ const db = {
   Market: defineMarket(sequelize, DataTypes),
   MarketPrice: defineMarketPrice(sequelize, DataTypes),
   SaleOffer: defineSaleOffer(sequelize, DataTypes),
+  Message: defineMessage(sequelize, DataTypes),
 };
 
 setupAssociations(db);

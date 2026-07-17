@@ -1,7 +1,9 @@
 import db from "../models/index.js";
 import { Op } from "sequelize";
+import { readFileSync } from "fs";
 import deepSeekConfig from "../config/deepSeek.js";
 import logger from "../utils/logger.js";
+import vectorService from "./vector.service.js";
 
 const { Product, Market, MarketPrice } = db;
 
@@ -74,113 +76,10 @@ async function getPriceHistory(productId, marketId, quality) {
   });
 }
 
-// DeepSeek tool definitions
-const tools = [
-  {
-    type: "function",
-    function: {
-      name: "searchProducts",
-      description: "Search for products (like tomatoes, potatoes, oranges) in the database to resolve their ID.",
-      parameters: {
-        type: "object",
-        properties: {
-          query: {
-            type: "string",
-            description: "The product name to search for (e.g. 'tomato' or 'potato')."
-          }
-        },
-        required: ["query"]
-      }
-    }
-  },
-  {
-    type: "function",
-    function: {
-      name: "searchMarkets",
-      description: "Search for wholesale or local markets in Morocco to resolve their ID.",
-      parameters: {
-        type: "object",
-        properties: {
-          query: {
-            type: "string",
-            description: "The market name or city to search for (e.g. 'Casablanca' or 'Agadir')."
-          }
-        },
-        required: ["query"]
-      }
-    }
-  },
-  {
-    type: "function",
-    function: {
-      name: "getCurrentMarketPrices",
-      description: "Get current market prices for a specific product and/or market.",
-      parameters: {
-        type: "object",
-        properties: {
-          productId: {
-            type: "integer",
-            description: "The unique ID of the product."
-          },
-          marketId: {
-            type: "integer",
-            description: "The unique ID of the market."
-          },
-          quality: {
-            type: "string",
-            description: "The quality grade of the product (e.g. 'A', 'B')."
-          }
-        }
-      }
-    }
-  },
-  {
-    type: "function",
-    function: {
-      name: "getBestMarketForProduct",
-      description: "Find the markets offering the highest prices for a specific product.",
-      parameters: {
-        type: "object",
-        properties: {
-          productId: {
-            type: "integer",
-            description: "The unique ID of the product."
-          },
-          quality: {
-            type: "string",
-            description: "The quality grade of the product (e.g. 'A')."
-          }
-        },
-        required: ["productId"]
-      }
-    }
-  },
-  {
-    type: "function",
-    function: {
-      name: "getPriceHistory",
-      description: "Get historical price trends for a product in a market to analyze price changes over time.",
-      parameters: {
-        type: "object",
-        properties: {
-          productId: {
-            type: "integer",
-            description: "The unique ID of the product."
-          },
-          marketId: {
-            type: "integer",
-            description: "The unique ID of the market."
-          },
-          quality: {
-            type: "string",
-            description: "The quality grade of the product (e.g. 'A')."
-          }
-        },
-        required: ["productId", "marketId"]
-      }
-    }
-  }
-];
+// Load DeepSeek tool definitions from JSON file
+const tools = JSON.parse(
+  readFileSync(new URL("../config/deepSeekTools.json", import.meta.url), "utf-8")
+);
 
 class AIService {
   /**
@@ -194,20 +93,34 @@ class AIService {
       throw new Error("DeepSeek API key is not configured.");
     }
 
+    // Fetch the current date from the database
+    let dbDate = "";
+    try {
+      const [result] = await db.sequelize.query("SELECT TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD') as date");
+      dbDate = result[0]?.date || new Date().toISOString().split('T')[0];
+    } catch (error) {
+      logger.error("Failed to fetch date from database:", error);
+      dbDate = new Date().toISOString().split('T')[0];
+    }
+
     // Build the messages list with the custom system prompt
     const systemMessage = {
       role: "system",
       content: `You are FellahConnect AI, a smart agriculture assistant for Moroccan farmers.
-Your core task is to assist users with checking product prices, comparing market options, analyzing historical price trends, and determining where they can sell their produce for the highest profit.
+Your core task is to assist users with checking product prices, comparing market options, analyzing historical price trends, determining where they can sell their produce for the highest profit, and providing expert agricultural advice (such as crop diseases, planting schedules, irrigation, and storage techniques).
+
+Current Date (Database Time): ${dbDate}
 
 CRITICAL INSTRUCTIONS:
 1. Always resolve product names (e.g. 'tomato', 'potato', 'orange') and market/city names (e.g. 'Casablanca', 'Agadir') using 'searchProducts' and 'searchMarkets' tools first to obtain their database IDs. Do not guess IDs.
-2. Ground all answers in real database information retrieved via tools. If no price data exists for a query, state it clearly.
-3. When compared prices are requested (e.g. "which market is best?"), compare the rates across all returned markets:
+2. Ground all answers in real database or vector database information retrieved via tools. If no data exists for a query, state it clearly.
+3. For agricultural guides, advice, diseases, or farming best practices, use the 'searchAgriculturalGuides' tool. Do not answer from general knowledge alone if a relevant guide can be retrieved.
+4. When compared prices are requested (e.g. "which market is best?"), compare the rates across all returned markets:
    - Identify the market offering the HIGHEST price.
    - List other markets and show the price difference so the farmer understands the potential gains.
-4. Respond in a friendly, helpful, and professional tone.
-5. Translate the final response to Moroccan Darija, French, or English as requested by the user. If they write in Darija, respond in Darija.`
+5. Respond in a friendly, helpful, and professional tone.
+6. Translate the final response to Moroccan Darija, French, or English as requested by the user. If they write in Darija, respond in Darija (using Arabizi).
+7. CRITICAL: You MUST ALWAYS respond using ONLY the Latin/English alphabet. You are STRICTLY FORBIDDEN from using any Arabic characters (e.g. do not write 'أحسن', use 'ahsan'; do not write 'الدار البيضاء', use 'Casablanca'; do not write 'بطاطس', use 'btata') under any circumstances. Transliterate all Arabic/Darija words into Latin script phonetically.`
     };
 
     const messages = [
@@ -274,6 +187,8 @@ CRITICAL INSTRUCTIONS:
               result = await getBestMarketForProduct(args.productId, args.quality);
             } else if (name === "getPriceHistory") {
               result = await getPriceHistory(args.productId, args.marketId, args.quality);
+            } else if (name === "searchAgriculturalGuides") {
+              result = await vectorService.searchGuides(args.query);
             } else {
               result = { error: `Tool ${name} not found` };
             }

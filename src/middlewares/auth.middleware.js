@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import authService from "../services/auth.service.js";
 import db from "../models/index.js";
 import ApiResponse from "../utils/apiResponse.js";
 
@@ -20,7 +20,7 @@ export async function protect(req, res, next) {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret_key_here");
+    const decoded = authService.verifyToken(token);
 
     // Get user from database
     const user = await User.findByPk(decoded.id, {

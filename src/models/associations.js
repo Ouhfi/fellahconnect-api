@@ -8,6 +8,7 @@ export default (models) => {
     Market,
     MarketPrice,
     SaleOffer,
+    Message,
   } = models;
 
   
@@ -17,6 +18,16 @@ export default (models) => {
   });
 
   Farmer.belongsTo(User, {
+    foreignKey: "userId",
+    as: "user",
+  });
+
+  User.hasMany(Message, {
+    foreignKey: "userId",
+    as: "messages",
+  });
+
+  Message.belongsTo(User, {
     foreignKey: "userId",
     as: "user",
   });

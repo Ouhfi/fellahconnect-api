@@ -35,13 +35,14 @@ const envSchema = z.object({
   // Pinecone Integration (Optional)
   PINECONE_API_KEY: z.string().optional().or(z.literal("")),
   PINECONE_INDEX_NAME: z.string().default("fellahconnect-index"),
+  PINECONE_HOST: z.string().optional().or(z.literal("")),
 });
 
 // Perform validation
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-  console.error("❌ Invalid environment variables configuration:");
+  console.error("Invalid environment variables configuration:");
   console.error(JSON.stringify(parsedEnv.error.format(), null, 2));
   process.exit(1);
 }
