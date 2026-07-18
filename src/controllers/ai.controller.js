@@ -4,11 +4,8 @@ import db from "../models/index.js";
 
 const { Message } = db;
 
-class AIController {
-  /**
-   * Handle grounding chat prompt
-   */
-  async chat(req, res, next) {
+
+  async function chat(req, res, next) {
     try {
       const { prompt, history = [] } = req.body;
 
@@ -32,6 +29,5 @@ class AIController {
       next(error);
     }
   }
-}
 
-export default new AIController();
+export default chat;

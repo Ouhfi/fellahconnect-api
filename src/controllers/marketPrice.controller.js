@@ -59,7 +59,7 @@ class MarketPriceController {
       if (marketId) where.marketId = marketId;
       if (productId) where.productId = productId;
       if (quality) where.quality = quality;
-      
+
       if (startDate || endDate) {
         where.priceDate = {};
         if (startDate) where.priceDate[Op.gte] = startDate;
